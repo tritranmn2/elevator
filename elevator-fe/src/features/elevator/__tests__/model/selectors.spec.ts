@@ -4,9 +4,9 @@ import {
   selectElevatorById,
   selectIsHallCallActive,
   selectIsFloorInDestination,
-} from './selectors';
-import { initialElevatorState } from './state';
-import type { ElevatorFeatureState } from './state';
+} from '../../model/selectors';
+import { initialElevatorState } from '../../model/state';
+import type { ElevatorFeatureState } from '../../model/state';
 
 describe('elevatorSelectors', () => {
   const mockState: ElevatorFeatureState = {

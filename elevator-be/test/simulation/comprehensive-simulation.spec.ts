@@ -1,15 +1,15 @@
-import { Elevator } from './entities/elevator';
-import { ElevatorSystem } from './elevator-system';
-import { Direction } from './enums/direction.enum';
-import { DoorState } from './enums/door-state.enum';
-import { ElevatorState } from './enums/elevator-state.enum';
-import { UpHallRequest } from './requests/up-hall-request';
-import { DownHallRequest } from './requests/down-hall-request';
-import { NearestSuitableElevatorStrategy } from './strategies/nearest-suitable.strategy';
+import { Elevator } from '../../src/domain/entities/elevator';
+import { ElevatorSystem } from '../../src/domain/elevator-system';
+import { Direction } from '../../src/domain/enums/direction.enum';
+import { DoorState } from '../../src/domain/enums/door-state.enum';
+import { ElevatorState } from '../../src/domain/enums/elevator-state.enum';
+import { UpHallRequest } from '../../src/domain/requests/up-hall-request';
+import { DownHallRequest } from '../../src/domain/requests/down-hall-request';
+import { NearestSuitableElevatorStrategy } from '../../src/domain/strategies/nearest-suitable.strategy';
 
-describe('Comprehensive Elevator Test Suite (34 Cases)', () => {
+describe('Comprehensive Elevator Simulation Test Suite (34 Cases)', () => {
   /**
-   * Helper chạy ticks cho 1 thang máy và ghi nhận danh sách tầng dừng (ELEVATOR_STOPPED)
+   * Helper chạy ticks cho 1 thang máy và ghi nhận danh sách tầng dừng
    */
   function runElevatorAndCollectStops(elevator: Elevator, maxTicks = 120): { stops: number[]; path: number[] } {
     const stops: number[] = [];
@@ -35,15 +35,6 @@ describe('Comprehensive Elevator Test Suite (34 Cases)', () => {
       }
     }
     return { stops, path };
-  }
-
-  /**
-   * Helper chạy ticks cho toàn bộ hệ thống ElevatorSystem
-   */
-  function runSystemTicks(system: ElevatorSystem, ticks: number) {
-    for (let i = 0; i < ticks; i++) {
-      system.tick();
-    }
   }
 
   /**
@@ -145,7 +136,6 @@ describe('Comprehensive Elevator Test Suite (34 Cases)', () => {
       e1.assignHallRequest(new DownHallRequest(5));
 
       const { stops } = runElevatorAndCollectStops(e1);
-      // Đi hết lên 10 trước, sau đó đổi chiều đi xuống 5
       expect(stops).toEqual([10, 5]);
       expect(e1.getCurrentFloor()).toBe(5);
     });
@@ -206,13 +196,11 @@ describe('Comprehensive Elevator Test Suite (34 Cases)', () => {
       const e1 = new Elevator(1, 1);
       e1.addDestination(10);
 
-      // Cho thang chạy đến tầng 3
       while (e1.getCurrentFloor() < 3) {
         e1.tick();
       }
       expect(e1.getCurrentFloor()).toBe(3);
 
-      // Thêm request F5 UP khi đang ở tầng 3
       e1.assignHallRequest(new UpHallRequest(5));
 
       const { stops } = runElevatorAndCollectStops(e1);
@@ -228,7 +216,6 @@ describe('Comprehensive Elevator Test Suite (34 Cases)', () => {
       }
       expect(e1.getCurrentFloor()).toBe(5);
 
-      // F3 UP xuất hiện phía sau
       e1.assignHallRequest(new UpHallRequest(3));
 
       const { stops } = runElevatorAndCollectStops(e1);
@@ -258,7 +245,6 @@ describe('Comprehensive Elevator Test Suite (34 Cases)', () => {
       const e1 = new Elevator(1, 1);
       e1.addDestination(7);
 
-      // Chạy đến tầng 5
       while (e1.getCurrentFloor() < 5) {
         e1.tick();
       }
@@ -302,7 +288,6 @@ describe('Comprehensive Elevator Test Suite (34 Cases)', () => {
 
       expect([1, 2, 3]).toContain(res.assignedElevatorId);
 
-      // Đếm số thang có request
       const activeElevators = system.getElevators().filter(
         (e) => e.getHallRequests().length > 0 || e.getDestinationRequests().length > 0
       );
@@ -313,20 +298,13 @@ describe('Comprehensive Elevator Test Suite (34 Cases)', () => {
       const system = new ElevatorSystem(3);
       const elevators = system.getElevators();
 
-      // E1: 1 -> 10
       system.selectDestination(1, 10);
       expect(elevators[0].getDirection()).toBe(Direction.UP);
 
-      // E2 đặt tại 8, E3 đặt tại 9
       const strategy = new NearestSuitableElevatorStrategy();
       const request = new UpHallRequest(5);
 
       const costE1 = strategy.calculateCost(elevators[0], request);
-      const costE2 = strategy.calculateCost(new Elevator(2, 8), request);
-      const costE3 = strategy.calculateCost(new Elevator(3, 9), request);
-
-      // E1 đang đi UP từ 1 lên 10 qua 5: cost = (5 - 1) + 1 * 0.5 = 4.5
-      // E2 IDLE tại 8: cost = |8 - 5| = 3 (nhưng nếu E2 ở 8 đi xuống đón UP thì tính cost IDLE)
       expect(costE1).toBeLessThan(10);
     });
 
@@ -363,7 +341,6 @@ describe('Comprehensive Elevator Test Suite (34 Cases)', () => {
       const costE2 = strategy.calculateCost(e2, req);
       const costE3 = strategy.calculateCost(e3, req);
 
-      // E2 đang đi DOWN ngược chiều F6 UP nên chi phí rất cao do PENALTY_REVERSAL
       expect(costE2).toBeGreaterThan(costE1);
       expect(costE2).toBeGreaterThan(costE3);
     });
@@ -431,7 +408,6 @@ describe('Comprehensive Elevator Test Suite (34 Cases)', () => {
       expect(e1.getDoorState()).toBe(DoorState.OPEN);
 
       e1.addDestination(8);
-      // Khi cửa mở, tick() chỉ xử lý chu trình dwell của cửa, không được nhảy tầng
       e1.tick();
       expect(e1.getCurrentFloor()).toBe(5);
       expect(e1.getDoorState()).toBe(DoorState.OPEN);
@@ -509,7 +485,6 @@ describe('Comprehensive Elevator Test Suite (34 Cases)', () => {
         .reduce((sum, e) => sum + e.getHallRequests().length, 0);
       expect(totalAssigned).toBe(4);
 
-      // Chạy toàn bộ hệ thống đến khi xử lý xong
       runSystemUntilIdle(system, 120);
 
       const remainingRequests = system
@@ -526,34 +501,25 @@ describe('Comprehensive Elevator Test Suite (34 Cases)', () => {
     it('Test 34: Kịch bản đa bước liên tục: Dest 10 -> F5 UP (tại tầng 3) -> F7 DOWN (tại tầng 5) -> F8 UP -> Lộ trình: 5 -> 8 -> 10 -> 7', () => {
       const e1 = new Elevator(1, 1);
 
-      // Bước 1: Khách tại tầng 1 chọn Dest = 10 -> E1 bắt đầu đi lên
       e1.addDestination(10);
       expect(e1.getState()).toBe(ElevatorState.MOVING_UP);
 
-      // Bước 2: Khi E1 đang qua tầng 3, xuất hiện F5 UP
       while (e1.getCurrentFloor() < 3) {
         e1.tick();
       }
       expect(e1.getCurrentFloor()).toBe(3);
       e1.assignHallRequest(new UpHallRequest(5));
 
-      // Bước 3: Thang tiếp tục chạy đến tầng 5 và dừng đón khách
       while (e1.getCurrentFloor() < 5) {
         e1.tick();
       }
       expect(e1.getCurrentFloor()).toBe(5);
 
-      // Trong lúc ở tầng 5, xuất hiện F7 DOWN (ngược chiều)
       e1.assignHallRequest(new DownHallRequest(7));
-
-      // Bước 4: Trong lúc đang đi lên tiếp, xuất hiện F8 UP (cùng chiều)
       e1.assignHallRequest(new UpHallRequest(8));
 
-      // Cho thang chạy tiếp hoàn tất lộ trình
       const { stops } = runElevatorAndCollectStops(e1, 150);
 
-      // Kỳ vọng: Đón F5 (đã tới) -> đón F8 trên đường lên -> tới 10 -> quay đầu đón F7 DOWN
-      // Điểm dừng đón: [5, 8, 10, 7]
       expect(stops).toContain(8);
       expect(stops).toContain(10);
       expect(stops).toContain(7);

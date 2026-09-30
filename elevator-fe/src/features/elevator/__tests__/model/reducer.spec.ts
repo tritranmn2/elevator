@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
-import { elevatorReducer } from './reducer';
-import { initialElevatorState } from './state';
-import type { SystemSnapshot, SimulationTickPayload } from './types';
+import { elevatorReducer } from '../../model/reducer';
+import { initialElevatorState } from '../../model/state';
+import type { SystemSnapshot, SimulationTickPayload } from '../../model/types';
 
 describe('elevatorReducer', () => {
   it('should initialize with 3 elevators at floor 1 in IDLE state', () => {

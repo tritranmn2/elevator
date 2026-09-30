@@ -1,10 +1,9 @@
-import { ElevatorSystem } from './elevator-system';
-import { Elevator } from './entities/elevator';
-import { Direction } from './enums/direction.enum';
-import { ElevatorState } from './enums/elevator-state.enum';
-import { DoorState } from './enums/door-state.enum';
-import { UpHallRequest } from './requests/up-hall-request';
-import { DownHallRequest } from './requests/down-hall-request';
+import { ElevatorSystem } from '../../src/domain/elevator-system';
+import { Elevator } from '../../src/domain/entities/elevator';
+import { Direction } from '../../src/domain/enums/direction.enum';
+import { ElevatorState } from '../../src/domain/enums/elevator-state.enum';
+import { DoorState } from '../../src/domain/enums/door-state.enum';
+import { DownHallRequest } from '../../src/domain/requests/down-hall-request';
 
 describe('Comprehensive Edge Cases & System Invariants', () => {
   let system: ElevatorSystem;
