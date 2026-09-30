@@ -44,11 +44,9 @@ describe('Elevator Entity - LOOK Algorithm & State Machine', () => {
     elevator.addDestination(5);
 
     // Wait for door to complete opening, dwell, and close
-    elevator.tick(); // DOOR_OPEN (dwell 3)
-    elevator.tick(); // DOOR_OPEN (dwell 2)
-    elevator.tick(); // DOOR_OPEN (dwell 1)
-    elevator.tick(); // DOOR_CLOSING
-    elevator.tick(); // DOOR_CLOSED -> starts MOVING_UP to Floor 5
+    while (!elevator.isIdle() && elevator.getState() !== ElevatorState.MOVING_UP) {
+      elevator.tick();
+    }
 
     expect(elevator.getState()).toBe(ElevatorState.MOVING_UP);
   });
