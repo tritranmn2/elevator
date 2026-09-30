@@ -1,10 +1,4 @@
 export const ELEVATOR_CONSTANTS = {
-  MIN_FLOOR: 1,
-  MAX_FLOOR: 10,
-  TOTAL_FLOORS: 10,
-  TOTAL_ELEVATORS: 3,
-  ELEVATOR_IDS: [1, 2, 3],
-  FLOOR_LIST: [10, 9, 8, 7, 6, 5, 4, 3, 2, 1], // Top to bottom display order
   API_ROUTES: {
     ELEVATORS: '/api/elevators',
     CALL: '/api/elevators/call',
@@ -19,3 +13,4 @@ export const ELEVATOR_CONSTANTS = {
     DOOR_STATE_CHANGED: 'elevator:door_state_changed',
   },
 } as const;
+

@@ -5,6 +5,16 @@ export const selectElevatorList = (state: ElevatorFeatureState): ElevatorSnapsho
   return Object.values(state.elevators).sort((a, b) => a.id - b.id);
 };
 
+export const selectElevatorIds = (state: ElevatorFeatureState): number[] => {
+  return Object.keys(state.elevators)
+    .map(Number)
+    .sort((a, b) => a - b);
+};
+
+export const selectFloorList = (totalFloors = 10): number[] => {
+  return Array.from({ length: totalFloors }, (_, i) => totalFloors - i);
+};
+
 export const selectElevatorById = (
   state: ElevatorFeatureState,
   id: number,
