@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import type { ElevatorSnapshot } from '../../model/types';
 import { ElevatorDoor } from './ElevatorDoor';
 import { useElevator } from '../../hooks/useElevator';
@@ -12,6 +12,23 @@ export const ElevatorCabin: React.FC<ElevatorCabinProps> = ({ elevator }) => {
   const isSelected = state.selectedElevatorId === elevator.id;
   const isDoorOpen = elevator.doorState === 'OPEN' || elevator.doorState === 'OPENING';
 
+  // Smooth glow transition when cabin mounts at a floor with opening doors
+  const [visualDoorOpen, setVisualDoorOpen] = useState<boolean>(() => {
+    if (elevator.doorState === 'OPENING') {
+      return false;
+    }
+    return isDoorOpen;
+  });
+
+  useEffect(() => {
+    if (visualDoorOpen !== isDoorOpen) {
+      const frameId = requestAnimationFrame(() => {
+        setVisualDoorOpen(isDoorOpen);
+      });
+      return () => cancelAnimationFrame(frameId);
+    }
+  }, [isDoorOpen, visualDoorOpen]);
+
   const renderDirectionSymbol = () => {
     if (elevator.direction === 'UP') return '↑';
     if (elevator.direction === 'DOWN') return '↓';
@@ -21,7 +38,7 @@ export const ElevatorCabin: React.FC<ElevatorCabinProps> = ({ elevator }) => {
   return (
     <div
       className={`elevator-cabin ${isSelected ? 'active-selected' : ''} ${
-        isDoorOpen ? 'door-open-green' : ''
+        visualDoorOpen ? 'door-open-green' : ''
       }`}
       onClick={() => setSelectedElevatorId(elevator.id)}
       title={`Elevator ${elevator.id} (Floor ${elevator.currentFloor}, Door ${elevator.doorState}, State ${elevator.state})`}
