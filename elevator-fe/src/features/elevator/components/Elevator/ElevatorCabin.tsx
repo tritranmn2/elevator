@@ -10,6 +10,7 @@ interface ElevatorCabinProps {
 export const ElevatorCabin: React.FC<ElevatorCabinProps> = ({ elevator }) => {
   const { state, setSelectedElevatorId } = useElevator();
   const isSelected = state.selectedElevatorId === elevator.id;
+  const isDoorOpen = elevator.doorState === 'OPEN' || elevator.doorState === 'OPENING';
 
   const renderDirectionSymbol = () => {
     if (elevator.direction === 'UP') return '↑';
@@ -19,7 +20,9 @@ export const ElevatorCabin: React.FC<ElevatorCabinProps> = ({ elevator }) => {
 
   return (
     <div
-      className={`elevator-cabin ${isSelected ? 'active-selected' : ''}`}
+      className={`elevator-cabin ${isSelected ? 'active-selected' : ''} ${
+        isDoorOpen ? 'door-open-green' : ''
+      }`}
       onClick={() => setSelectedElevatorId(elevator.id)}
       title={`Elevator ${elevator.id} (Floor ${elevator.currentFloor}, Door ${elevator.doorState}, State ${elevator.state})`}
       data-testid={`elevator-cabin-${elevator.id}`}

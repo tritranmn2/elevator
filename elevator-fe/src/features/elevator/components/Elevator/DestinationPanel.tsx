@@ -31,6 +31,7 @@ export const DestinationPanel: React.FC<DestinationPanelProps> = ({ elevatorId }
             borderRadius: '4px',
             background: isDoorOpen ? 'rgba(34, 197, 94, 0.15)' : 'rgba(239, 68, 68, 0.15)',
             color: isDoorOpen ? 'var(--status-open)' : 'var(--text-muted)',
+            fontWeight: 600,
           }}
         >
           {isDoorOpen ? 'Door Open (Selectable)' : 'Door Closed'}
@@ -46,7 +47,7 @@ export const DestinationPanel: React.FC<DestinationPanelProps> = ({ elevatorId }
             <button
               key={floor}
               type="button"
-              className={`btn-keypad-floor ${isTarget ? 'active-destination' : ''}`}
+              className={`btn-keypad-floor ${isTarget ? 'active-yellow' : ''}`}
               onClick={() => handleSelectFloor(floor)}
               title={
                 isCurrent

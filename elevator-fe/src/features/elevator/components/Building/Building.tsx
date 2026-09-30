@@ -13,7 +13,7 @@ export const Building: React.FC = () => {
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
           <Layers size={16} />
-          <span>3 Parallel Shafts</span>
+          <span>3 Shafts with Per-Floor Controls</span>
         </div>
       </div>
 
@@ -29,7 +29,6 @@ export const Building: React.FC = () => {
           <div className="shaft-col-label">
             <span>ELEVATOR 3</span>
           </div>
-          <div>HALL CALL</div>
         </div>
 
         {ELEVATOR_CONSTANTS.FLOOR_LIST.map((floor) => (

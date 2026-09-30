@@ -1,6 +1,6 @@
 import React from 'react';
 import { FloorNumber } from './FloorNumber';
-import { HallCallButtons } from './HallCallButtons';
+import { FloorCallButtons, FloorDoorIndicators } from './FloorElevatorControls';
 import { ElevatorCabin } from '../Elevator/ElevatorCabin';
 import { useElevator } from '../../hooks/useElevator';
 import { ELEVATOR_CONSTANTS } from '../../constants';
@@ -26,12 +26,23 @@ export const FloorRow: React.FC<FloorRowProps> = ({ floor }) => {
             className="shaft-cell"
             data-testid={`shaft-${elevatorId}-floor-${floor}`}
           >
-            {isHere && <ElevatorCabin elevator={elevator} />}
+            {/* Nút gọi thang Lên / Xuống (BÊN TRÁI CỬA) */}
+            <FloorCallButtons floor={floor} elevatorId={elevatorId} />
+
+            {/* Cabin thang máy / Khoang ray (Ở GIỮA) */}
+            <div className="shaft-slot">
+              {isHere ? (
+                <ElevatorCabin elevator={elevator} />
+              ) : (
+                <div className="shaft-empty-track" />
+              )}
+            </div>
+
+            {/* Đèn báo trạng thái Mở / Đóng cửa (BÊN PHẢI CỬA) */}
+            <FloorDoorIndicators floor={floor} elevatorId={elevatorId} />
           </div>
         );
       })}
-
-      <HallCallButtons floor={floor} />
     </div>
   );
 };
