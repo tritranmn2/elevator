@@ -297,6 +297,14 @@ export class Elevator implements IElevatorContext {
       direction: this.direction,
       timestamp,
     });
+
+    events.push({
+      type: 'DOOR_STATE_CHANGED',
+      elevatorId: this.id,
+      doorState: this.door.getState(),
+      floor: this.currentFloor,
+      timestamp,
+    });
   }
 
   /**

@@ -390,29 +390,22 @@
 }
 
 /* Trạng thái đóng / mở 2 cánh cửa sang 2 bên */
-.door-container.OPEN .door-leaf-left {
+.door-container.OPEN .door-leaf-left,
+.door-container.OPENING .door-leaf-left {
   transform: translateX(-100%);
 }
-.door-container.OPEN .door-leaf-right {
+
+.door-container.OPEN .door-leaf-right,
+.door-container.OPENING .door-leaf-right {
   transform: translateX(100%);
 }
 
-.door-container.OPENING .door-leaf-left {
-  transform: translateX(-85%);
-}
-.door-container.OPENING .door-leaf-right {
-  transform: translateX(85%);
+.door-container.CLOSING .door-leaf-left,
+.door-container.CLOSED .door-leaf-left {
+  transform: translateX(0);
 }
 
-.door-container.CLOSING .door-leaf-left {
-  transform: translateX(-20%);
-}
-.door-container.CLOSING .door-leaf-right {
-  transform: translateX(20%);
-}
-
-/* Khi CLOSED: 2 cánh khép kín hoàn toàn ở giữa, che kín 100% full width */
-.door-container.CLOSED .door-leaf-left,
+.door-container.CLOSING .door-leaf-right,
 .door-container.CLOSED .door-leaf-right {
   transform: translateX(0);
 }
