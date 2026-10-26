@@ -1,6 +1,6 @@
-.agents/*
-docs/*/*
-AGENTS.md
+# .agents/*
+# docs/*/*
+# AGENTS.md
 */node_modules
 */dist
 */logs
